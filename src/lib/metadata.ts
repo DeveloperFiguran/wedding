@@ -116,7 +116,7 @@ export async function buildInvitationMetadata(
   const metaImageUrl = seo?.meta_image_url || null
 
   // Title dengan default fallback
-  const autoTitle = `Undangan Pernikahan ${brideName} & ${groomName} 💍`
+  const autoTitle = `Undangan Pernikahan ${brideName} & ${groomName}`
   const rawTitle = metaTitle || autoTitle
   const title = rawTitle.slice(0, 60)
 
