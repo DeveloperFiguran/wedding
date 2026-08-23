@@ -42,7 +42,7 @@ import { toast } from 'sonner'
 import {
   isValidImageUrl, ValidationErrors, hasErrors
 } from '@/lib/validation'
-import { localToISO, isoToLocal, TIMEZONE_OPTIONS } from '@/lib/utils'
+import { isoToDate, dateToISO, localToISO, isoToLocal, TIMEZONE_OPTIONS } from '@/lib/utils'
 import { useHydrated } from '@/hooks/useHydrated'
 
 /* ============================================
@@ -686,7 +686,9 @@ export default function AdminSettings() {
               <Input
                 type="datetime-local"
                 value={settings.wedding.wedding_date ? isoToLocal(settings.wedding.wedding_date) : ''}
-                onChange={(e) => updateWedding('wedding_date', localToISO(e.target.value))}
+                onChange={(e) => updateWedding('wedding_date', 
+                  e.target.value ? new Date(e.target.value).toISOString() : null
+                )}
                 icon={<Clock size={16} />}
                 required
               />
@@ -776,7 +778,14 @@ export default function AdminSettings() {
                     </select>
                   </div>
 
-                  <Input label="Tanggal" type="date" value={event.event_date ? isoToLocal(event.event_date).split('T')[0] : ''} onChange={(e) => updateEvent(index, 'event_date', e.target.value ? localToISO(e.target.value + 'T00:00') : null)} />
+                  <Input 
+                    label="Tanggal" 
+                    type="date" 
+                    value={isoToDate(event.event_date)} 
+                    onChange={(e) => updateEvent(index, 'event_date', 
+                      e.target.value ? dateToISO(e.target.value) : null
+                    )} 
+                  />
                   <Input label="Waktu" type="time" value={event.event_time || ''} onChange={(e) => updateEvent(index, 'event_time', e.target.value)} />
                   <Input label="Lokasi" value={event.location || ''} onChange={(e) => updateEvent(index, 'location', e.target.value)} placeholder="Nama tempat" icon={<MapPin size={16} />} />
                   <div className="md:col-span-2">
