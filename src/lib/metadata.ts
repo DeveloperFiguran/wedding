@@ -122,7 +122,8 @@ export async function buildInvitationMetadata(
 
   // Description dengan default fallback
   const dateStr = formatDate(weddingDate)
-  const autoDescription = `Kami mengundang Anda untuk merayakan pernikahan ${brideFullname} & ${groomFullname}${dateStr ? ` pada ${dateStr}` : ''
+  // const autoDescription = `Kami mengundang Anda untuk merayakan pernikahan ${brideFullname} & ${groomFullname}${dateStr ? ` pada ${dateStr}` : ''
+  const autoDescription = `Kami mengundang Anda untuk merayakan pernikahan ${brideName} & ${groomName}${dateStr ? ` pada ${dateStr}` : ''
     }. Kehadiran Anda adalah kehormatan bagi kami.`
   const rawDescription = metaDescription || autoDescription
   const description = rawDescription.slice(0, 160)
