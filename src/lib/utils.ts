@@ -253,3 +253,51 @@ export function getCountdownDate(
     return null
   }
 }
+
+/**
+ * Konversi tanggal dari date picker ke ISO string.
+ * Menggunakan waktu 12:00 UTC untuk menghindari masalah timezone.
+ * 
+ * Input: "2026-10-10" (dari <input type="date">)
+ * Output: "2026-10-10T12:00:00.000Z" (noon UTC, aman di semua timezone)
+ */
+export function dateToISO(dateString: string): string {
+  if (!dateString) return ''
+  // Langsung set sebagai noon UTC - tidak terpengaruh timezone lokal
+  return `${dateString}T12:00:00.000Z`
+}
+
+/**
+ * Konversi ISO string kembali ke tanggal untuk date picker.
+ * Hanya mengambil bagian tanggal tanpa konversi timezone.
+ * 
+ * Input: "2026-10-09T17:00:00.000Z" atau "2026-10-10T12:00:00.000Z"
+ * Output: "2026-10-10" atau "2026-10-09" (string tanggal saja)
+ */
+export function isoToDate(isoString: string | null | undefined): string {
+  if (!isoString) return ''
+  // Jika sudah format YYYY-MM-DD murni
+  if (/^\d{4}-\d{2}-\d{2}$/.test(isoString)) return isoString
+  // Ambil bagian tanggal dari ISO string (sebelum T)
+  return isoString.split('T')[0]
+}
+
+/**
+ * Format tanggal untuk ditampilkan di undangan (dengan timezone).
+ * Gunakan ini untuk DISPLAY, bukan untuk input date picker.
+ */
+export function formatEventDate(isoString: string | null | undefined, timezone: string = 'Asia/Jakarta'): string {
+  if (!isoString) return ''
+  try {
+    const date = new Date(isoString)
+    return date.toLocaleDateString('id-ID', {
+      timeZone: timezone,
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  } catch {
+    return isoToDate(isoString)
+  }
+}
